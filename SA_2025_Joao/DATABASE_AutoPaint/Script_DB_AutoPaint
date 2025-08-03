@@ -1,0 +1,74 @@
+DROP DATABASE IF EXISTS Banco_AutoPaint;
+CREATE DATABASE Banco_AutoPaint;
+USE Banco_AutoPaint;
+
+CREATE TABLE usuarios (
+    id INT NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    senha VARCHAR(255) NOT NULL,
+    tipo_usuario ENUM('admin', 'colaborador') NOT NULL,
+    data_criacao DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE clientes (
+    id INT NOT NULL,
+    nome VARCHAR(100) NOT NULL,
+    telefone VARCHAR(20),
+    email VARCHAR(100),
+    cpf VARCHAR(14),
+    data_cadastro DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE pedidos (
+    id INT NOT NULL,
+    id_cliente INT NOT NULL,
+    id_usuario INT NOT NULL,
+    modelo_carro VARCHAR(100),
+    placa_carro VARCHAR(10),
+    cor_pintura VARCHAR(50),
+    forma_pagamento ENUM('pix', 'cartao_credito', 'cartao_debito', 'dinheiro', 'boleto') NOT NULL,
+    status_pedido ENUM('pendente', 'finalizado', 'cancelado') DEFAULT 'pendente',
+    data_pedido DATETIME DEFAULT CURRENT_TIMESTAMP,
+    data_finalizacao DATETIME
+);
+
+CREATE TABLE historico_pedidos (
+    id INT NOT NULL,
+    id_pedido INT NOT NULL,
+    descricao TEXT,
+    valor_total DECIMAL(10,2),
+    data_relatorio DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+ALTER TABLE usuarios
+    ADD PRIMARY KEY (id),
+        MODIFY id INT AUTO_INCREMENT;
+
+ALTER TABLE clientes
+    ADD PRIMARY KEY (id),
+        MODIFY id INT AUTO_INCREMENT;
+
+ALTER TABLE pedidos
+    ADD PRIMARY KEY (id),
+        MODIFY id INT AUTO_INCREMENT;
+
+ALTER TABLE historico_pedidos
+    ADD PRIMARY KEY (id),
+        MODIFY id INT AUTO_INCREMENT;
+
+-- Foreign Keys
+ALTER TABLE pedidos
+    ADD CONSTRAINT fk_pedidos_cliente
+        FOREIGN KEY (id_cliente) REFERENCES clientes(id),
+    ADD CONSTRAINT fk_pedidos_usuario
+        FOREIGN KEY (id_usuario) REFERENCES usuarios(id);
+
+ALTER TABLE historico_pedidos
+    ADD CONSTRAINT fk_historico_pedido
+        FOREIGN KEY (id_pedido) REFERENCES pedidos(id);
+    
+-- UNIQUE para evitar duplicidade
+ALTER TABLE usuarios
+    ADD UNIQUE (email);
+
+ALTER TABLE clientes
+    ADD UNIQUE (cpf);
