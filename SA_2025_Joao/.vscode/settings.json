@@ -1,0 +1,17 @@
+{
+  "sqltools.connections": [
+    {
+      "mysqlOptions": {
+        "authProtocol": "default",      // Protocolo de autenticação padrão
+        "enableSsl": "Disabled"         // SSL desativado (ok para local)
+      },
+      "previewLimit": 50,               // Limite de linhas ao visualizar dados
+      "server": "localhost",            // Onde o banco está rodando (localhost = sua máquina)
+      "port": 3306,                     // Porta padrão do MySQL
+      "driver": "MySQL",                // Tipo de banco (MySQL)
+      "name": "XAMPP",                  // Nome da conexão (você pode mudar)
+      "username": "root",               // Usuário do banco
+      "database": "Banco_AutoPaint"     // Nome do banco que você criou
+    }
+  ]
+}
